@@ -1,3 +1,5 @@
+Option Explicit
+
 Function getDimension(var As Variant) As Integer
 On Error GoTo Err:
     Dim i As Integer
@@ -33,7 +35,7 @@ End Function
 
 Function joinArray1(arr1() As String, arr2() As String) As String()
     Dim result() As String
-    Dim len1, len2, len3 As Integer
+    Dim len1, len2, len3, k, i, j As Integer
     len1 = UBound(arr1)
     len2 = UBound(arr2)
     len3 = len1 * len2
@@ -51,7 +53,7 @@ End Function
 
 Function joinArray2(arr1() As String, arr2() As String) As String()
     Dim result() As String
-    Dim len11, len12, len2 As Integer
+    Dim len11, len12, len2, i, j, k, q As Integer
     len11 = UBound(arr1, 1)
     len12 = UBound(arr1, 2)
     len2 = UBound(arr2)
@@ -71,7 +73,7 @@ End Function
 
 Function splitArray1(arr() As String) As String()
     Dim result() As String
-    Dim myLen As Integer
+    Dim myLen, i As Integer
     myLen = UBound(arr)
     ReDim result(myLen)
     For i = 1 To myLen
@@ -83,6 +85,8 @@ End Function
 Function splitArray2(arr() As String) As String()
     Dim result() As String
     Dim myLen As Integer
+    Dim myLen1, myLen2, i, j As Integer
+    
     myLen1 = UBound(arr, 1)
     myLen2 = UBound(arr, 2)
     If myLen2 > 2 Then
@@ -102,6 +106,9 @@ Function splitArray2(arr() As String) As String()
 End Function
 
 Sub printArray(arr() As String)
+    Dim i, j As Integer
+    Dim result As String
+    
     If getDimension(arr) = 1 Then
         For i = 1 To UBound(arr)
             Debug.Print arr(i)
@@ -121,7 +128,7 @@ End Sub
 Function RemoveDuplicated(Array_1() As String) As String()
 Dim Array_2() As String
 ReDim Array_2(1)
-Dim x As Integer
+Dim x, i As Integer
 
 Array_2(1) = Array_1(1)
 x = 2
@@ -137,17 +144,17 @@ End Function
 
 Function RangeToArray(rng As Range) As String()
     Dim result() As String
-    Dim nbCol As Integer
+    Dim nbCol, i, j As Integer
     If rng.Columns.Count = 1 Then
         ReDim result(rng.Rows.Count)
         For i = 1 To UBound(result)
-            result(i) = rng.Cells(i, 1).value
+            result(i) = rng.Cells(i, 1).Value
         Next
     Else
         ReDim result(rng.Rows.Count, rng.Columns.Count)
         For i = 1 To UBound(result, 1)
             For j = 1 To UBound(result, 2)
-                result(i, j) = rng.Cells(i, j).value
+                result(i, j) = rng.Cells(i, j).Value
             Next
         Next
     End If
@@ -155,14 +162,16 @@ Function RangeToArray(rng As Range) As String()
 End Function
 
 Sub pasteArray(arr() As String, dst As Range)
+    Dim i, j As Integer
+    
     If getDimension(arr) = 1 Then
         For i = 1 To UBound(arr)
-            dst.Cells(i, 1).value = arr(i)
+            dst.Cells(i, 1).Value = arr(i)
         Next
     Else
         For i = 1 To UBound(arr, 1)
             For j = 1 To UBound(arr, 2)
-                dst.Cells(i, j).value = arr(i, j)
+                dst.Cells(i, j).Value = arr(i, j)
             Next
         Next
     End If
@@ -176,7 +185,6 @@ Sub joinRange(rng1 As Range, rng2 As Range, dst As Range)
     arr = joinArray(arr1, arr2)
     pasteArray arr, dst
 End Sub
-
 
 Function filterArray(tabIni() As String, pattern As String, col As Integer) As String()
     Dim result() As String
